@@ -1,0 +1,25 @@
+Title: DataStreamAudioReceiver retains registrations after close and shares clear-buffer routing across rooms
+
+Observed against livekit/agents commit 11c8ad8d74c272cf046e65d83cfe7be46abaec64.
+
+DataStreamAudioReceiver registers a byte-stream handler on its Room, while clear-buffer RPCs are dispatched through a process-wide dictionary keyed only by sender identity. aclose() closes tasks and channels but does not remove either registration.
+
+This produces two lifecycle problems:
+
+1. A receiver cannot be closed and recreated on the same Room: the existing lk.audio_stream handler still owns the topic.
+2. Two different rooms with the same sender identity overwrite the shared clear-buffer dispatch entry. An RPC received in one room can be dispatched to the other room's receiver.
+
+Room.register_byte_stream_handler already rejects a second handler for the same topic. Therefore one receiver per Room is an existing constraint; a process-wide multiplexing table does not enable multiple receivers in one Room.
+
+Proposed fix:
+
+- Register the instance RPC on the receiver's own Room.
+- Acquire the exclusive byte-stream registration before registering the RPC.
+- Undo that registration if RPC registration fails.
+- Unregister both handlers when the owning receiver closes. Closing a second receiver whose start failed must not remove the first receiver's handlers.
+
+A separate public API question arises when handling clear_buffer. The receiver still emits AudioSegmentEnd for a cleared reader, but that event does not expose whether the segment was cleared. Consumers cannot distinguish it from a normally completed segment without reading receiver internals. The attached proposal adds AudioSegmentEnd.interrupted, populated from the receiver's existing cleared flag; it preserves the existing end marker and introduces no new turn state machine.
+
+The registration fix and public end-marker field can be reviewed separately if maintainers prefer. No package version or changelog change is proposed.
+
+Validation results and the standalone real-RTC reproduction are supplied alongside this draft. They must be read with their stated scope; this is not a GPU avatar acceptance report.

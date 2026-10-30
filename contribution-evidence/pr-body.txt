@@ -1,0 +1,18 @@
+Title: Fix avatar receiver registration ownership and expose cleared segment ends
+
+Closing DataStreamAudioReceiver currently leaves its byte-stream handler and process-wide clear-buffer dispatch entry registered. Recreating the receiver on the same Room fails, and equal sender identities in different rooms share a dispatch key.
+
+Register and unregister each receiver on its own Room, matching the existing one-handler-per-topic constraint. Register the byte-stream handler first so a second receiver cannot replace the first receiver's RPC before the duplicate topic is rejected. Record successful ownership so closing a receiver whose start failed cannot remove another receiver's handlers.
+
+AudioSegmentEnd.interrupted exposes the existing cleared-reader flag. Both normal and cleared readers continue to produce an end marker, allowing consumers to distinguish their completion semantics without accessing private receiver state.
+
+Scope:
+- No wire-protocol change.
+- No additional turn state machine or compatibility layer.
+- No package-version or changelog edits.
+- Does not claim to fix native RTC teardown diagnostics or avatar playout timing.
+
+Validation:
+- Ruff, AST parsing, and patch checks passed against the stated upstream base.
+- Real-RTC reproduction and results are supplied in the accompanying validation record.
+- No GPU/model or application end-to-end acceptance is claimed by this dependency-level change.

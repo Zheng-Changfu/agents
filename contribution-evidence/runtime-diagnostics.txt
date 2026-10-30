@@ -1,0 +1,18 @@
+Sanitized diagnostic summary; this is not an unedited stderr transcript.
+Local filesystem paths and test-key length details are intentionally omitted.
+
+All three runs:
+PyJWT emitted InsecureKeyLengthWarning for the local test-key configuration.
+
+Unmodified upstream, ownership reproduction:
+ERROR:livekit:livekit::rtc_engine::rtc_session:2526:livekit::rtc_engine::rtc_session - failed to negotiate the publisher: Rtc(RtcError { error_type: InvalidState, message: "Failed to set local offer sdp: Called in wrong state: closed" })
+
+Patched upstream, ownership reproduction:
+ERROR:livekit:livekit::rtc_engine::rtc_session:2526:livekit::rtc_engine::rtc_session - failed to negotiate the publisher: Rtc(RtcError { error_type: InvalidState, message: "Failed to set local offer sdp: Called in wrong state: closed" })
+
+Patched upstream, generated-PCM acceptance:
+No RTC/Agents runtime errors were recorded in stderr.
+
+Both ownership runs completed the routing/recreation observations and explicit
+temporary-room cleanup. The identical native teardown diagnostic is outside
+the scope of the receiver proposal and is not claimed to be resolved.

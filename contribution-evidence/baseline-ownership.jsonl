@@ -1,0 +1,4 @@
+{"case": "cross_room_clear", "expected": [1, 0], "observed": [0, 1], "passed": false}
+{"case": "close_then_recreate", "passed": false}
+{"case": "baseline", "regression_reproduced": true}
+{"case": "cleanup", "remaining_rooms": 0, "disconnected_peers": 4}

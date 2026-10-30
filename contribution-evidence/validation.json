@@ -1,0 +1,76 @@
+{
+  "repository": "https://github.com/livekit/agents",
+  "base_sha": "11c8ad8d74c272cf046e65d83cfe7be46abaec64",
+  "proposal": {
+    "files": 2,
+    "insertions": 24,
+    "deletions": 40
+  },
+  "environment": {
+    "os": "Windows",
+    "python": "3.12.13",
+    "livekit": "1.1.21",
+    "livekit_api": "1.2.2",
+    "livekit_server": "v1.13.10"
+  },
+  "isolation": {
+    "separate_source_checkouts": true,
+    "source_path_checked_at_runtime": true,
+    "production_dependencies_modified": false,
+    "mocks": false,
+    "user_media": false,
+    "credentials_in_artifacts": false
+  },
+  "baseline": {
+    "cross_room_clear_passed": false,
+    "expected_clear_callbacks": [
+      1,
+      0
+    ],
+    "observed_clear_callbacks": [
+      0,
+      1
+    ],
+    "close_then_recreate_passed": false,
+    "expected_regressions_reproduced": true,
+    "exit_code": 0,
+    "remaining_temporary_rooms": 0
+  },
+  "patched_ownership": {
+    "cross_room_clear_passed": true,
+    "observed_clear_callbacks": [
+      1,
+      0
+    ],
+    "close_then_recreate_passed": true,
+    "exit_code": 0,
+    "remaining_temporary_rooms": 0
+  },
+  "patched_pcm_acceptance": {
+    "duplicate_start_close_preserves_original": true,
+    "both_cross_room_clear_directions": true,
+    "normal_and_clear_end_facts": true,
+    "recreated_receiver_pcm_and_rpc": true,
+    "exit_code": 0,
+    "remaining_temporary_rooms": 0
+  },
+  "diagnostics": {
+    "local_jwt_key_length_warning": true,
+    "native_teardown_error_in_both_rpc_only_runs": true,
+    "native_teardown_error_in_pcm_run": false,
+    "native_teardown_fix_claimed": false
+  },
+  "limits": [
+    "No GPU, avatar-provider, or application end-to-end acceptance",
+    "No proof of all AvatarRunner consumers handling the new field",
+    "No long-term memory/native-handle leak claim",
+    "interrupted means clear_buffer discard only",
+    "Final post-run change was documentation only"
+  ],
+  "static_checks": [
+    "Ruff using upstream configuration",
+    "AST parsing",
+    "git diff --check",
+    "git apply --check"
+  ]
+}

@@ -1,0 +1,8 @@
+{"at": 1793366586857, "case": "source", "isolated": true, "generated_pcm": true}
+{"at": 1793366592875, "case": "connected", "rooms": 2, "peers": 4, "equal_sender_identities": true}
+{"at": 1793366592881, "case": "duplicate_receiver_close", "passed": true, "original_pcm_received": true}
+{"at": 1793366592903, "case": "cross_room_clear", "target": "a", "interrupted": true, "other_room_continued": true, "passed": true}
+{"at": 1793366592913, "case": "cross_room_clear", "target": "b", "interrupted": true, "other_room_continued": true, "passed": true}
+{"at": 1793366592931, "case": "recreate_same_room", "passed": true, "normal_end": true, "clear_end": true}
+{"at": 1793366592946, "case": "cleanup", "remaining_rooms": 0, "disconnected_peers": 4}
+{"at": 1793366592946, "case": "complete", "passed": true}
